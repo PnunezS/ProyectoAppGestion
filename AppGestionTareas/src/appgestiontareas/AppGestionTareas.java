@@ -4,6 +4,8 @@
  */
 package appgestiontareas;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -21,8 +23,10 @@ public class AppGestionTareas {
         int eleccion=0;
         Scanner userInput=new Scanner(System.in);
         
+        List<AppTask> tareas=new ArrayList<>();
+        
         do{
-            printMenu();
+            PrintMenu();
             System.out.println("Indique elección: ");
             String textoEleccion=userInput.nextLine();
             
@@ -30,6 +34,20 @@ public class AppGestionTareas {
                 //texto elección es solo numeros se puede parsear
                 System.out.println("Procesando elección");
                 eleccion=Integer.parseInt(textoEleccion);
+                
+                switch(eleccion){
+                    case 1:
+                        CreateTask(tareas,userInput);
+                        break;
+                    case 2:
+                        ListAllTasks(tareas);
+                        break;
+                    case 6:
+                        System.out.println("*** Saliendo del programa ***");
+                        break;
+                    default:
+                        System.out.println("ERROR: opción no reconocida");
+                }
                 
             }else{
                 //No se puede parsear si no hay numeros
@@ -47,7 +65,7 @@ public class AppGestionTareas {
     // 5. autoeliminar tareas completadas
     // 6. cerrar
     
-    private static void printMenu(){
+    private static void PrintMenu(){
         System.out.println("***App gestión de tareas***");
         System.out.println("   1. Crear nueva tarea");
         System.out.println("   2. Listar todas las tareas");
@@ -55,6 +73,30 @@ public class AppGestionTareas {
         System.out.println("   4. Eliminar tarea de indice indicado");
         System.out.println("   5. Autoeliminar todas las tareas marcadas como completadas");
         System.out.println("   6. Salir");
+    }
+    
+    private static void CreateTask(List<AppTask> taskList, Scanner keyboard){
+        System.out.println("*** Creating new task ***");
+        
+        System.out.println("Indique nombre de tarea: ");
+        String taskName=keyboard.nextLine();
+        
+        System.out.println("Indique descripción de tarea: ");
+        String taskDesc=keyboard.nextLine();
+        
+        AppTask newTask=new AppTask();
+        newTask.setTaskName(taskName);
+        newTask.setTaskDescription(taskDesc);
+        
+        taskList.add(newTask);
+    }
+    
+    private static void ListAllTasks(List<AppTask> taskList){
+        System.out.println("*** Listando toda las tareas ***");
+        
+        taskList.forEach(task -> System.out.println(task.toString()));
+        
+        System.out.println("*** Fin de lista ***");
     }
     
 }

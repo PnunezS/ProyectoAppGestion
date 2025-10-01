@@ -11,7 +11,6 @@ package appgestiontareas;
 public class AppTask {
     private String taskName="task";
     private String taskDescription="dummy task";
-    private int hoursNeeded=0;
     private boolean taskCompleted=false;
 
     public AppTask() {
@@ -33,14 +32,6 @@ public class AppTask {
         this.taskDescription = taskDescription;
     }
 
-    public int getHoursNeeded() {
-        return hoursNeeded;
-    }
-
-    public void setHoursNeeded(int hoursNeeded) {
-        this.hoursNeeded = hoursNeeded;
-    }
-
     public boolean isTaskCompleted() {
         return taskCompleted;
     }
@@ -51,7 +42,7 @@ public class AppTask {
 
     @Override
     public String toString() {
-        return "AppTask{" + "taskName=" + taskName + ", taskDescription=" + taskDescription + ", hoursNeeded=" + hoursNeeded + ", taskCompleted=" + taskCompleted + '}';
+        return "AppTask{" + "taskName=" + taskName + ", taskDescription=" + taskDescription + ", taskCompleted=" + taskCompleted + '}';
     }
     
     
