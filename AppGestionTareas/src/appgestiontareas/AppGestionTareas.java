@@ -5,6 +5,7 @@
 package appgestiontareas;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -21,14 +22,14 @@ public class AppGestionTareas {
         // TODO code application logic here
         
         int eleccion=0;
-        Scanner userInput=new Scanner(System.in);
+        Scanner keyboard=new Scanner(System.in);
         
         List<AppTask> tareas=new ArrayList<>();
         
         do{
             PrintMenu();
             System.out.println("Indique elección: ");
-            String textoEleccion=userInput.nextLine();
+            String textoEleccion=keyboard.nextLine();
             
             if(textoEleccion.matches("[1-6]")){
                 //texto elección es solo numeros se puede parsear
@@ -37,10 +38,13 @@ public class AppGestionTareas {
                 
                 switch(eleccion){
                     case 1:
-                        CreateTask(tareas,userInput);
+                        CreateTask(tareas,keyboard);
                         break;
                     case 2:
                         ListAllTasks(tareas);
+                        break;
+                    case 3:
+                        MarkTaskCompleted(tareas,keyboard);
                         break;
                     case 6:
                         System.out.println("*** Saliendo del programa ***");
@@ -94,9 +98,32 @@ public class AppGestionTareas {
     private static void ListAllTasks(List<AppTask> taskList){
         System.out.println("*** Listando toda las tareas ***");
         
-        taskList.forEach(task -> System.out.println(task.toString()));
+        //taskList.forEach(task -> System.out.println(task.toString()));
+        
+        for(int i=0;i<taskList.size();i++){
+            System.out.println(i+") "+taskList.get(i).toString());
+        }
         
         System.out.println("*** Fin de lista ***");
+    }
+    
+    private static void MarkTaskCompleted(List<AppTask> taskList, Scanner keyboard){
+        System.out.println("*** Marcar tarea como completada ***");
+        
+        System.out.println("Indique índice de tarea para marcar como completada: ");
+        try{
+            int userInput=keyboard.nextInt();
+            
+            if(userInput>taskList.size()){
+                System.out.println("Aviso: fuera de rango de lista");
+                return;
+            }
+            taskList.get(userInput).setTaskCompleted(true);
+            System.out.println("La tarea se marcó como completada con éxito");
+        }catch(InputMismatchException e){
+            System.err.println("ERROR: no se ha insertado un input válido");
+        }
+        
     }
     
 }
