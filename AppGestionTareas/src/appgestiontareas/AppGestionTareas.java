@@ -46,6 +46,11 @@ public class AppGestionTareas {
                     case 3:
                         MarkTaskCompleted(tareas,keyboard);
                         break;
+                    case 4:
+                        DeleteTask(tareas,keyboard);
+                        break;
+                    case 5:
+                        tareas=AutocleanTasks(tareas,keyboard);
                     case 6:
                         System.out.println("*** Saliendo del programa ***");
                         break;
@@ -115,7 +120,7 @@ public class AppGestionTareas {
             int userInput=keyboard.nextInt();
             
             if(userInput>taskList.size()){
-                System.out.println("Aviso: fuera de rango de lista");
+                System.out.println("AVISO: fuera de rango de lista");
                 return;
             }
             taskList.get(userInput).setTaskCompleted(true);
@@ -124,6 +129,71 @@ public class AppGestionTareas {
             System.err.println("ERROR: no se ha insertado un input válido");
         }
         
+    }
+    
+    private static void DeleteTask(List<AppTask> taskList, Scanner keyboard){
+        System.out.println("*** Eliminar tarea ***");
+        
+        System.out.println("Indique índice de tarea para eliminar: ");
+        try{
+            int userInput=keyboard.nextInt();
+            
+            if(userInput>taskList.size()){
+                System.out.println("AVISO: fuera de rango de lista");
+                return;
+            }
+            
+            AppTask objetivo=taskList.get(userInput);
+            
+            System.out.println("Encontrado: "+objetivo.toString());
+            System.out.println("*** AVISO: al eliminar una trea se perderan sus datos ***");
+            System.out.println("*** ¿Está seguro de querer borrarlo? (Y)-> SI,borrar (N)-> NO,conservar ***");
+            
+            String confirmar=keyboard.nextLine();
+            
+            if(confirmar.equals("Y")){
+                System.out.println("Confirmado, borrando datos...");
+                
+                taskList.remove(userInput);
+                
+                System.out.println("Operación completada");
+            }else{
+                System.out.println("Cancelando operación");
+            }
+            
+        }catch(InputMismatchException e){
+            System.err.println("ERROR: no se ha insertado un input válido");
+        }
+    }
+    
+    private static List<AppTask> AutocleanTasks(List<AppTask> taskList, Scanner keyboard){
+        System.out.println("*** Eliminar tareas completadas ***");
+        
+        System.out.println("*** AVISO: Se van a eliminar todas las tareas completas ***");
+        System.out.println("*** ¿Está seguro de querer borrarlo? (Y)-> SI,borrar (N)-> NO,conservar ***");
+        
+        String confirmar=keyboard.nextLine();
+            
+        if(confirmar.equals("Y")){
+            System.out.println("Confirmado, borrando datos...");
+                
+            List<AppTask> newList=new ArrayList<>();
+            
+            AppTask[] oldTasks=(AppTask[])(taskList.toArray());
+            
+            for(int i=0;i<taskList.size();i++){
+                if(!oldTasks[i].isTaskCompleted()){
+                    newList.add(oldTasks[i]);
+                }
+            }
+                
+            System.out.println("Operación completada");
+            return newList;
+        }else{
+            System.out.println("Cancelando operación");
+        }
+        
+        return taskList;
     }
     
 }
